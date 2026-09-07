@@ -1,0 +1,4718 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>My Life</title>
+
+<style>
+
+/* =========================================
+   GENERAL
+========================================= */
+
+* {
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 25px;
+    background: #f2f3f5;
+    color: #222;
+}
+
+.container {
+    max-width: 1100px;
+    margin: auto;
+}
+
+h1 {
+    margin: 0;
+    font-size: 32px;
+}
+
+.date {
+    color: #666;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+
+/* =========================================
+   TOP BAR
+========================================= */
+
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 20px;
+}
+
+.moment-button {
+    border: none;
+    border-radius: 10px;
+    padding: 12px 18px;
+    background: #e7dff5;
+    color: #4c3866;
+    font-size: 15px;
+    cursor: pointer;
+    font-weight: bold;
+}
+
+.moment-button:hover {
+    background: #ddd1ef;
+}
+
+
+/* =========================================
+   DASHBOARD
+========================================= */
+
+.dashboard {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.box {
+    background: white;
+    border-radius: 14px;
+    padding: 14px 16px;
+    min-height: 0;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.box h2 {
+    margin-top: 0;
+    margin-bottom: 10px;
+    font-size: 19px;
+}
+
+.box h3 {
+    margin-bottom: 10px;
+}
+
+
+/* =========================================
+   TASKS / ITEMS
+========================================= */
+
+.task {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 11px;
+    margin-bottom: 8px;
+    background: #f5f5f5;
+    border-radius: 9px;
+}
+
+.task-left {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    flex: 1;
+    min-width: 0;
+}
+
+.task-left input {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+    cursor: pointer;
+}
+
+.task-info {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+    min-width: 0;
+}
+
+.task-info strong {
+    overflow-wrap: anywhere;
+}
+
+.task-date {
+    font-size: 13px;
+    color: #777;
+}
+
+.empty {
+    color: #888;
+    font-style: italic;
+}
+
+.delete-button {
+    border: none;
+    background: #ddd;
+    padding: 6px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+    flex-shrink: 0;
+}
+
+.delete-button:hover {
+    background: #ccc;
+}
+
+
+/* =========================================
+   ADD AREA
+========================================= */
+
+.add-section {
+    margin-top: 16px;
+    background: white;
+    border-radius: 14px;
+    padding: 14px 16px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.add-section h2 {
+    margin-top: 0;
+}
+
+
+/* =========================================
+   ADD BUTTON SELECTORS
+========================================= */
+
+.add-type-buttons {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr);
+    gap: 6px;
+    margin-bottom: 12px;
+}
+
+.add-type-button {
+    padding: 12px 8px;
+    border: 1px solid #ccc;
+    border-radius: 9px;
+    background: #f5f5f5;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.add-type-button:hover {
+    background: #e9e9e9;
+}
+
+.add-type-button.active {
+    background: #222;
+    color: white;
+    border-color: #222;
+}
+
+
+/* =========================================
+   FORMS
+========================================= */
+
+.add-form {
+    border-top: 1px solid #ddd;
+    padding-top: 18px;
+}
+
+label {
+    display: block;
+    margin-top: 14px;
+    margin-bottom: 6px;
+    font-weight: bold;
+}
+
+input[type="text"],
+input[type="number"],
+input[type="date"],
+input[type="time"],
+select {
+    width: 100%;
+    padding: 11px;
+    border: 1px solid #ccc;
+    border-radius: 8px;
+    font-size: 16px;
+    background: white;
+}
+
+.add-button {
+    margin-top: 15px;
+    padding: 11px 18px;
+    border: none;
+    border-radius: 8px;
+    background: #222;
+    color: white;
+    font-size: 15px;
+    cursor: pointer;
+}
+
+.add-button:hover {
+    background: #444;
+}
+
+.hidden {
+    display: none !important;
+}
+
+
+/* =========================================
+   TAKE A MOMENT OVERLAY
+========================================= */
+
+.moment-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.48);
+    display: none;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    z-index: 9999;
+}
+
+.moment-overlay.open {
+    display: flex;
+}
+
+.moment-card {
+    width: min(430px, 100%);
+    background: white;
+    border-radius: 22px;
+    padding: 30px 25px;
+    text-align: center;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+}
+
+.moment-card h2 {
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+.moment-card p {
+    color: #666;
+    line-height: 1.5;
+}
+
+.breath-circle {
+    width: 145px;
+    height: 145px;
+    margin: 28px auto;
+    border-radius: 50%;
+    background: #e7dff5;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #4c3866;
+    font-weight: bold;
+    animation: breathe 8s ease-in-out infinite;
+}
+
+@keyframes breathe {
+
+    0% {
+        transform: scale(0.75);
+    }
+
+    50% {
+        transform: scale(1.15);
+    }
+
+    100% {
+        transform: scale(0.75);
+    }
+
+}
+
+.ready-button {
+    border: none;
+    border-radius: 10px;
+    padding: 12px 24px;
+    background: #222;
+    color: white;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.ready-button:hover {
+    background: #444;
+}
+
+
+/* =========================================
+   MOBILE
+========================================= */
+
+@media (max-width: 700px) {
+
+    body {
+        padding: 12px;
+    }
+
+    .container {
+        width: 100%;
+    }
+
+    h1 {
+        font-size: 27px;
+    }
+
+    .top-bar {
+        align-items: flex-start;
+    }
+
+    .moment-button {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+
+    .dashboard {
+        grid-template-columns: 1fr;
+        gap: 12px;
+    }
+
+    .box {
+        padding: 16px;
+        min-height: auto;
+    }
+
+    .box h2 {
+        font-size: 19px;
+    }
+
+    .add-section {
+        padding: 16px;
+    }
+
+    .add-type-buttons {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .add-type-button {
+        padding: 13px 7px;
+    }
+
+    .task {
+        padding: 10px;
+    }
+
+    .delete-button {
+        padding: 7px 9px;
+    }
+
+}
+
+
+/* =========================================
+   VERY SMALL PHONE
+========================================= */
+
+@media (max-width: 390px) {
+
+    body {
+        padding: 9px;
+    }
+
+    .top-bar {
+        flex-direction: column;
+    }
+
+    .moment-button {
+        width: 100%;
+    }
+
+    .add-type-buttons {
+        grid-template-columns: 1fr 1fr;
+    }
+
+}
+
+/* =========================================
+   ADHD-FRIENDLY LAYER
+========================================= */
+
+.focus-box {
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    margin-bottom: 18px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.focus-box h2 {
+    margin-top: 0;
+    margin-bottom: 8px;
+}
+
+.focus-subtitle {
+    color: #666;
+    margin-top: 0;
+    margin-bottom: 16px;
+}
+
+.focus-priorities {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.priority-row {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    padding: 11px;
+    background: #f5f5f5;
+    border-radius: 9px;
+}
+
+.priority-row input {
+    width: 20px;
+    height: 20px;
+}
+
+.priority-row strong {
+    flex: 1;
+}
+
+.quick-capture {
+    margin-top: 16px;
+    display: flex;
+    gap: 8px;
+}
+
+.quick-capture input {
+    flex: 1;
+}
+
+.quick-button {
+    border: none;
+    border-radius: 8px;
+    padding: 11px 15px;
+    background: #222;
+    color: white;
+    cursor: pointer;
+    font-size: 15px;
+}
+
+.quick-button:hover {
+    background: #444;
+}
+
+.voice-button {
+    border: none;
+    border-radius: 8px;
+    padding: 11px 15px;
+    background: #e7dff5;
+    color: #4c3866;
+    cursor: pointer;
+    font-size: 15px;
+    font-weight: bold;
+}
+
+.voice-button:hover {
+    background: #ddd1ef;
+}
+
+.voice-status {
+    font-size: 13px;
+    color: #666;
+    margin-top: 8px;
+}
+
+.brain-dump-box {
+    margin-top: 18px;
+}
+
+.dump-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 10px;
+    padding: 11px;
+    margin-bottom: 8px;
+    background: #f5f5f5;
+    border-radius: 9px;
+}
+
+.dump-text {
+    flex: 1;
+    overflow-wrap: anywhere;
+}
+
+.dump-actions {
+    display: flex;
+    gap: 5px;
+    flex-shrink: 0;
+}
+
+.small-button {
+    border: none;
+    border-radius: 6px;
+    padding: 6px 9px;
+    cursor: pointer;
+    background: #ddd;
+}
+
+.small-button:hover {
+    background: #ccc;
+}
+
+.reset-box {
+    margin-top: 18px;
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.reset-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.reset-button {
+    border: none;
+    border-radius: 8px;
+    padding: 10px 13px;
+    cursor: pointer;
+    background: #eee;
+}
+
+.reset-button:hover {
+    background: #ddd;
+}
+
+.reset-button.primary {
+    background: #222;
+    color: white;
+}
+
+.progress-box {
+    margin-top: 18px;
+    background: white;
+    border-radius: 14px;
+    padding: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+}
+
+.progress-number {
+    font-size: 30px;
+    font-weight: bold;
+    margin-bottom: 4px;
+}
+
+.progress-text {
+    color: #666;
+}
+
+@media (max-width: 700px) {
+
+    .quick-capture {
+        flex-direction: column;
+    }
+
+    .quick-button,
+    .voice-button {
+        width: 100%;
+    }
+
+    .dump-item {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+
+    .dump-actions {
+        width: 100%;
+    }
+
+    .small-button {
+        flex: 1;
+    }
+
+}
+
+/* ================================
+   COLLAPSIBLE APP SECTIONS
+   ================================ */
+
+.app-section {
+    margin-bottom: 16px;
+    border-radius: 14px;
+    overflow: hidden;
+}
+
+.section-header {
+    width: 100%;
+    border: none;
+    padding: 16px 18px;
+    background: #f5f5f5;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.section-header:hover {
+    background: #eeeeee;
+}
+
+.section-arrow {
+    font-size: 14px;
+    transition: transform 0.2s ease;
+}
+
+.section-content {
+    padding: 4px 0;
+}
+
+.section-content.collapsed {
+    display: none;
+}
+
+.section-header.open .section-arrow {
+    transform: rotate(180deg);
+}
+
+</style>
+
+</head>
+
+
+<body>
+
+
+<div class="container">
+
+
+<!-- =========================================
+     HEADER
+========================================= -->
+
+<div class="top-bar">
+
+    <div>
+
+        <h1>My Life</h1>
+
+        <div
+            class="date"
+            id="todayDate">
+        </div>
+
+    </div>
+
+
+    <button
+        class="moment-button"
+        type="button"
+        onclick="openMoment()">
+
+        🧘 Take a Moment
+
+    </button>
+
+</div>
+
+
+<!-- =========================================
+     DASHBOARD
+========================================= -->
+
+<div class="focus-box">
+    <h2>🧭 Today at a Glance</h2>
+    <p class="focus-subtitle">
+        You don't have to figure everything out right now.
+        Just see what matters today.
+    </p>
+
+    <div id="todayFocus"></div>
+
+    <div class="quick-capture">
+        <input
+            type="text"
+            id="quickCaptureInput"
+            placeholder="Something on your mind..."
+            onkeydown="
+                if(event.key === 'Enter') {
+                    quickCapture();
+                }
+            "
+        >
+
+        <button
+            class="quick-button"
+            type="button"
+            onclick="quickCapture()">
+            + Capture
+        </button>
+
+        <button
+            class="voice-button"
+            type="button"
+            onclick="startVoiceDump()">
+            🎤 Voice Dump
+        </button>
+    </div>
+
+    <div id="voiceStatus" class="voice-status"></div>
+</div>
+
+<div class="focus-box brain-dump-box">
+    <h2>🧠 Brain Dump</h2>
+
+    <p class="focus-subtitle">
+        Things you don't need to deal with right now.
+        Get them out of your head.
+    </p>
+
+    <div id="brainDump"></div>
+</div>
+
+<div class="progress-box">
+    <h2>🎉 Today</h2>
+    <div id="todayProgress"></div>
+</div>
+
+<div class="dashboard">
+
+
+<!-- TODAY -->
+
+<div class="box">
+
+<h2>📌 Today</h2>
+
+<h3>Tasks</h3>
+
+<div id="todayTasks"></div>
+
+<h3>Appointments</h3>
+
+<div id="todayAppointments"></div>
+
+<h3>💳 Payments Due</h3>
+
+<div id="todayPayments"></div>
+
+</div>
+
+
+<!-- BIRTHDAYS -->
+
+<div class="box">
+
+<h2>🎂 Birthdays</h2>
+
+<div id="birthdays"></div>
+
+</div>
+
+<div class="reset-box">
+    <h2>🌙 Daily Reset</h2>
+
+    <p class="focus-subtitle">
+        A tiny reset. No need to finish everything.
+    </p>
+
+    <div id="dailyResetItems"></div>
+</div>
+
+<!-- COMING UP -->
+
+<!-- COMING UP -->
+
+<div class="app-section">
+
+<button
+    class="section-header"
+    type="button"
+    onclick="toggleSection(this)">
+    <span>🔭 Coming Up This Week</span>
+    <span class="section-arrow">▼</span>
+</button>
+
+<div class="section-content collapsed">
+
+<div class="box">
+
+<div id="upcoming"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- RECURRING -->
+
+<div class="app-section">
+
+<button
+    class="section-header"
+    type="button"
+    onclick="toggleSection(this)">
+    <span>🔁 Recurring Tasks</span>
+    <span class="section-arrow">▼</span>
+</button>
+
+<div class="section-content collapsed">
+
+<div class="box">
+
+<div id="recurringTasks"></div>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- BILLS -->
+
+<div class="app-section">
+
+<button
+    class="section-header"
+    type="button"
+    onclick="toggleSection(this)">
+    <span>💳 Bills & Payments</span>
+    <span class="section-arrow">▼</span>
+</button>
+
+<div class="section-content collapsed">
+
+<div class="box">
+
+<div id="bills"></div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- =========================================
+     ADD SOMETHING
+========================================= -->
+
+<div class="add-section">
+
+<h2>➕ Add Something</h2>
+
+
+<div class="add-type-buttons">
+
+
+<button
+    id="buttonTask"
+    class="add-type-button active"
+    type="button"
+    onclick="showForm('task')">
+
+📋 Task
+
+</button>
+
+
+<button
+    id="buttonAppointment"
+    class="add-type-button"
+    type="button"
+    onclick="showForm('appointment')">
+
+🕐 Appointment
+
+</button>
+
+
+<button
+    id="buttonRecurring"
+    class="add-type-button"
+    type="button"
+    onclick="showForm('recurring')">
+
+🔁 Recurring
+
+</button>
+
+
+<button
+    id="buttonBill"
+    class="add-type-button"
+    type="button"
+    onclick="showForm('bill')">
+
+💳 Bill
+
+</button>
+
+
+<button
+    id="buttonBirthday"
+    class="add-type-button"
+    type="button"
+    onclick="showForm('birthday')">
+
+🎂 Birthday
+
+</button>
+
+
+</div>
+
+
+<!-- =========================================
+     TASK FORM
+========================================= -->
+
+<div
+    id="taskForm"
+    class="add-form">
+
+<label for="taskName">
+What do you need to do?
+</label>
+
+<input
+    type="text"
+    id="taskName"
+    placeholder="Example: Call the dentist"
+>
+
+<label for="taskDate">
+When?
+</label>
+
+<input
+    type="date"
+    id="taskDate"
+>
+
+<button
+    class="add-button"
+    type="button"
+    onclick="addTask()">
+
+Add Task
+
+</button>
+
+</div>
+
+
+<!-- =========================================
+     APPOINTMENT FORM
+========================================= -->
+
+<div
+    id="appointmentForm"
+    class="add-form hidden">
+
+<label for="appointmentName">
+What is the appointment?
+</label>
+
+<input
+    type="text"
+    id="appointmentName"
+    placeholder="Example: Dentist"
+>
+
+<label for="appointmentDate">
+Date
+</label>
+
+<input
+    type="date"
+    id="appointmentDate"
+>
+
+<label for="appointmentTime">
+Time
+</label>
+
+<input
+    type="time"
+    id="appointmentTime"
+>
+
+<button
+    class="add-button"
+    type="button"
+    onclick="addAppointment()">
+
+Add Appointment
+
+</button>
+
+</div>
+
+
+<!-- =========================================
+     RECURRING TASK FORM
+========================================= -->
+
+<div
+    id="recurringForm"
+    class="add-form hidden">
+
+<label for="recurringTaskName">
+What do you need to do regularly?
+</label>
+
+<input
+    type="text"
+    id="recurringTaskName"
+    placeholder="Example: Take garbage out"
+>
+
+<label for="recurringFrequency">
+How often?
+</label>
+
+<select
+    id="recurringFrequency"
+    onchange="updateRecurringFields()">
+
+<option value="daily">
+Every day
+</option>
+
+<option value="weekly">
+Every week
+</option>
+
+<option value="biweekly">
+Every 2 weeks
+</option>
+
+<option value="monthly">
+Every month
+</option>
+
+</select>
+
+
+<div id="recurringDayField">
+
+<label for="recurringDay">
+Day of the week
+</label>
+
+<select id="recurringDay">
+
+<option value="0">Sunday</option>
+<option value="1">Monday</option>
+<option value="2">Tuesday</option>
+<option value="3">Wednesday</option>
+<option value="4">Thursday</option>
+<option value="5">Friday</option>
+<option value="6">Saturday</option>
+
+</select>
+
+</div>
+
+
+<div
+    id="recurringMonthField"
+    class="hidden">
+
+<label for="recurringMonthDay">
+Day of the month
+</label>
+
+<select id="recurringMonthDay">
+
+<option value="1">1st</option>
+<option value="2">2nd</option>
+<option value="3">3rd</option>
+<option value="4">4th</option>
+<option value="5">5th</option>
+<option value="6">6th</option>
+<option value="7">7th</option>
+<option value="8">8th</option>
+<option value="9">9th</option>
+<option value="10">10th</option>
+<option value="11">11th</option>
+<option value="12">12th</option>
+<option value="13">13th</option>
+<option value="14">14th</option>
+<option value="15">15th</option>
+<option value="16">16th</option>
+<option value="17">17th</option>
+<option value="18">18th</option>
+<option value="19">19th</option>
+<option value="20">20th</option>
+<option value="21">21st</option>
+<option value="22">22nd</option>
+<option value="23">23rd</option>
+<option value="24">24th</option>
+<option value="25">25th</option>
+<option value="26">26th</option>
+<option value="27">27th</option>
+<option value="28">28th</option>
+<option value="29">29th</option>
+<option value="30">30th</option>
+<option value="31">31st</option>
+
+</select>
+
+</div>
+
+
+<button
+    class="add-button"
+    type="button"
+    onclick="addRecurringTask()">
+
+Add Recurring Task
+
+</button>
+
+</div>
+
+
+<!-- =========================================
+     BILL FORM
+========================================= -->
+
+<div
+    id="billForm"
+    class="add-form hidden">
+
+<label for="billName">
+What is the bill?
+</label>
+
+<input
+    type="text"
+    id="billName"
+    placeholder="Example: Hydro"
+>
+
+<label for="billAmount">
+Amount (optional)
+</label>
+
+<input
+    type="number"
+    id="billAmount"
+    placeholder="Example: 125.00"
+    step="0.01"
+>
+
+<label for="billFrequency">
+How often?
+</label>
+
+<select
+    id="billFrequency"
+    onchange="updateBillFields()">
+
+<option value="weekly">
+Every week
+</option>
+
+<option value="biweekly">
+Every 2 weeks
+</option>
+
+<option value="monthly">
+Every month
+</option>
+
+<option value="yearly">
+Every year
+</option>
+
+</select>
+
+
+<div id="billMonthField">
+
+<label for="billDay">
+Due day of the month
+</label>
+
+<select id="billDay">
+
+<option value="1">1st</option>
+<option value="2">2nd</option>
+<option value="3">3rd</option>
+<option value="4">4th</option>
+<option value="5">5th</option>
+<option value="6">6th</option>
+<option value="7">7th</option>
+<option value="8">8th</option>
+<option value="9">9th</option>
+<option value="10">10th</option>
+<option value="11">11th</option>
+<option value="12">12th</option>
+<option value="13">13th</option>
+<option value="14">14th</option>
+<option value="15">15th</option>
+<option value="16">16th</option>
+<option value="17">17th</option>
+<option value="18">18th</option>
+<option value="19">19th</option>
+<option value="20">20th</option>
+<option value="21">21st</option>
+<option value="22">22nd</option>
+<option value="23">23rd</option>
+<option value="24">24th</option>
+<option value="25">25th</option>
+<option value="26">26th</option>
+<option value="27">27th</option>
+<option value="28">28th</option>
+<option value="29">29th</option>
+<option value="30">30th</option>
+<option value="31">31st</option>
+
+</select>
+
+</div>
+
+
+<div
+    id="billWeekField"
+    class="hidden">
+
+<label for="billWeekDay">
+Due day of the week
+</label>
+
+<select id="billWeekDay">
+
+<option value="0">Sunday</option>
+<option value="1">Monday</option>
+<option value="2">Tuesday</option>
+<option value="3">Wednesday</option>
+<option value="4">Thursday</option>
+<option value="5">Friday</option>
+<option value="6">Saturday</option>
+
+</select>
+
+</div>
+
+
+<button
+    class="add-button"
+    type="button"
+    onclick="addBill()">
+
+Add Bill / Payment
+
+</button>
+
+</div>
+
+
+<!-- =========================================
+     BIRTHDAY FORM
+========================================= -->
+
+<div
+    id="birthdayForm"
+    class="add-form hidden">
+
+<label for="birthdayName">
+Whose birthday?
+</label>
+
+<input
+    type="text"
+    id="birthdayName"
+    placeholder="Example: Sarah"
+>
+
+<label for="birthdayDate">
+Birthday
+</label>
+
+<input
+    type="date"
+    id="birthdayDate"
+>
+
+<label for="birthdayYear">
+Birth year (optional)
+</label>
+
+<input
+    type="number"
+    id="birthdayYear"
+    placeholder="Example: 2010"
+    min="1900"
+    max="2100"
+>
+
+<button
+    class="add-button"
+    type="button"
+    onclick="addBirthday()">
+
+Add Birthday
+
+</button>
+
+</div>
+
+
+</div>
+
+
+</div>
+
+
+<!-- =========================================
+     TAKE A MOMENT WINDOW
+========================================= -->
+
+<div
+    id="momentOverlay"
+    class="moment-overlay">
+
+<div class="moment-card">
+
+<h2>🧘 Take a Moment</h2>
+
+<p>
+Nothing to solve right now.
+Just breathe.
+</p>
+
+<div
+    class="breath-circle"
+    id="breathCircle">
+
+Breathe
+
+</div>
+
+<p>
+Let the circle guide you.
+Slow breath in as it grows,
+slow breath out as it shrinks.
+</p>
+
+<button
+    class="ready-button"
+    type="button"
+    onclick="closeMoment()">
+
+I'm Ready
+
+</button>
+
+</div>
+
+</div>
+
+
+<script>
+
+
+// ============================================
+// DATE
+// ============================================
+
+function getTodayString() {
+
+    const date = new Date();
+
+    const year =
+        date.getFullYear();
+
+    const month =
+        String(
+            date.getMonth() + 1
+        ).padStart(2, "0");
+
+    const day =
+        String(
+            date.getDate()
+        ).padStart(2, "0");
+
+    return `${year}-${month}-${day}`;
+
+}
+
+
+const todayString =
+    getTodayString();
+
+
+document
+    .getElementById("todayDate")
+    .textContent =
+    new Date().toLocaleDateString(
+        "en-CA",
+        {
+            weekday: "long",
+            year: "numeric",
+            month: "long",
+            day: "numeric"
+        }
+    );
+
+
+// ============================================
+// TAKE A MOMENT
+// ============================================
+
+function openMoment() {
+
+    const overlay =
+        document.getElementById(
+            "momentOverlay"
+        );
+
+    overlay.classList.add("open");
+
+}
+
+
+function closeMoment() {
+
+    const overlay =
+        document.getElementById(
+            "momentOverlay"
+        );
+
+    overlay.classList.remove("open");
+
+}
+
+
+// Allow clicking outside the card to close it
+
+document
+    .getElementById("momentOverlay")
+    .addEventListener(
+        "click",
+        function(event) {
+
+            if (
+                event.target ===
+                this
+            ) {
+
+                closeMoment();
+
+            }
+
+        }
+    );
+
+
+// ============================================
+// ESCAPE KEY CLOSE
+// ============================================
+
+document.addEventListener(
+    "keydown",
+    function(event) {
+
+        if (
+            event.key === "Escape"
+        ) {
+
+            closeMoment();
+
+        }
+
+    }
+);
+
+
+// ============================================
+// LOAD DATA
+// ============================================
+
+let tasks =
+    JSON.parse(
+        localStorage.getItem(
+            "myLifeTasks"
+        )
+    ) || [];
+
+
+let appointments =
+    JSON.parse(
+        localStorage.getItem(
+            "myLifeAppointments"
+        )
+    ) || [];
+
+
+let recurringTasks =
+    JSON.parse(
+        localStorage.getItem(
+            "myLifeRecurringTasks"
+        )
+    ) || [];
+
+
+let bills =
+    JSON.parse(
+        localStorage.getItem(
+            "myLifeBills"
+        )
+    ) || [];
+
+
+let birthdays =
+    JSON.parse(
+        localStorage.getItem(
+            "myLifeBirthdays"
+        )
+    ) || [];
+
+let brainDump =
+    JSON.parse(
+        localStorage.getItem(
+            "myLifeBrainDump"
+        )
+    ) || [];
+
+let priorities =
+    JSON.parse(
+        localStorage.getItem(
+            "myLifePriorities"
+        )
+    ) || [];
+
+
+// ============================================
+// SAVE
+// ============================================
+
+function saveTasks() {
+
+    localStorage.setItem(
+        "myLifeTasks",
+        JSON.stringify(tasks)
+    );
+
+}
+
+
+function saveAppointments() {
+
+    localStorage.setItem(
+        "myLifeAppointments",
+        JSON.stringify(appointments)
+    );
+
+}
+
+
+function saveRecurringTasks() {
+
+    localStorage.setItem(
+        "myLifeRecurringTasks",
+        JSON.stringify(recurringTasks)
+    );
+
+}
+
+
+function saveBills() {
+
+    localStorage.setItem(
+        "myLifeBills",
+        JSON.stringify(bills)
+    );
+
+}
+
+
+function saveBirthdays() {
+
+    localStorage.setItem(
+        "myLifeBirthdays",
+        JSON.stringify(birthdays)
+    );
+
+}
+
+function saveBrainDump() {
+    localStorage.setItem(
+        "myLifeBrainDump",
+        JSON.stringify(brainDump)
+    );
+}
+
+function savePriorities() {
+    localStorage.setItem(
+        "myLifePriorities",
+        JSON.stringify(priorities)
+    );
+}
+
+
+// ============================================
+// SWITCH ADD FORM
+// ============================================
+
+function showForm(type) {
+
+    const forms = [
+
+        "taskForm",
+        "appointmentForm",
+        "recurringForm",
+        "billForm",
+        "birthdayForm"
+
+    ];
+
+
+    forms.forEach(
+        form => {
+
+            document
+                .getElementById(form)
+                .classList.add(
+                    "hidden"
+                );
+
+        }
+    );
+
+
+    const buttons = [
+
+        "buttonTask",
+        "buttonAppointment",
+        "buttonRecurring",
+        "buttonBill",
+        "buttonBirthday"
+
+    ];
+
+
+    buttons.forEach(
+        button => {
+
+            document
+                .getElementById(button)
+                .classList.remove(
+                    "active"
+                );
+
+        }
+    );
+
+
+    const formMap = {
+
+        task:
+            [
+                "taskForm",
+                "buttonTask"
+            ],
+
+        appointment:
+            [
+                "appointmentForm",
+                "buttonAppointment"
+            ],
+
+        recurring:
+            [
+                "recurringForm",
+                "buttonRecurring"
+            ],
+
+        bill:
+            [
+                "billForm",
+                "buttonBill"
+            ],
+
+        birthday:
+            [
+                "birthdayForm",
+                "buttonBirthday"
+            ]
+
+    };
+
+
+    const selected =
+        formMap[type];
+
+
+    document
+        .getElementById(
+            selected[0]
+        )
+        .classList.remove(
+            "hidden"
+        );
+
+
+    document
+        .getElementById(
+            selected[1]
+        )
+        .classList.add(
+            "active"
+        );
+
+}
+
+
+// ============================================
+// ADD TASK
+// ============================================
+
+function addTask() {
+
+    const name =
+        document
+            .getElementById(
+                "taskName"
+            )
+            .value
+            .trim();
+
+
+    const date =
+        document
+            .getElementById(
+                "taskDate"
+            )
+            .value;
+
+
+    if (!name || !date) {
+
+        alert(
+            "Please enter a task and a date."
+        );
+
+        return;
+
+    }
+
+
+    tasks.push({
+
+        id: Date.now(),
+
+        name: name,
+
+        date: date,
+
+        completed: false,
+
+        recurringInstance: false
+
+    });
+
+
+    saveTasks();
+
+
+    document
+        .getElementById(
+            "taskName"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "taskDate"
+        )
+        .value = "";
+
+
+    displayAll();
+
+}
+
+
+// ============================================
+// ADD APPOINTMENT
+// ============================================
+
+function addAppointment() {
+
+    const name =
+        document
+            .getElementById(
+                "appointmentName"
+            )
+            .value
+            .trim();
+
+
+    const date =
+        document
+            .getElementById(
+                "appointmentDate"
+            )
+            .value;
+
+
+    const time =
+        document
+            .getElementById(
+                "appointmentTime"
+            )
+            .value;
+
+
+    if (!name || !date || !time) {
+
+        alert(
+            "Please enter the appointment, date and time."
+        );
+
+        return;
+
+    }
+
+
+    appointments.push({
+
+        id: Date.now(),
+
+        name: name,
+
+        date: date,
+
+        time: time
+
+    });
+
+
+    saveAppointments();
+
+
+    document
+        .getElementById(
+            "appointmentName"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "appointmentDate"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "appointmentTime"
+        )
+        .value = "";
+
+
+    displayAll();
+
+}
+
+
+// ============================================
+// ADD RECURRING TASK
+// ============================================
+
+function addRecurringTask() {
+
+    const name =
+        document
+            .getElementById(
+                "recurringTaskName"
+            )
+            .value
+            .trim();
+
+
+    const frequency =
+        document
+            .getElementById(
+                "recurringFrequency"
+            )
+            .value;
+
+
+    const day =
+        Number(
+            document
+                .getElementById(
+                    "recurringDay"
+                )
+                .value
+        );
+
+
+    const monthDay =
+        Number(
+            document
+                .getElementById(
+                    "recurringMonthDay"
+                )
+                .value
+        );
+
+
+    if (!name) {
+
+        alert(
+            "Please enter a recurring task."
+        );
+
+        return;
+
+    }
+
+
+    recurringTasks.push({
+
+        id: Date.now(),
+
+        name: name,
+
+        frequency: frequency,
+
+        day: day,
+
+        monthDay: monthDay,
+
+        createdDate: todayString
+
+    });
+
+
+    saveRecurringTasks();
+
+
+    document
+        .getElementById(
+            "recurringTaskName"
+        )
+        .value = "";
+
+
+    displayAll();
+
+}
+
+
+// ============================================
+// ADD BILL
+// ============================================
+
+function addBill() {
+
+    const name =
+        document
+            .getElementById(
+                "billName"
+            )
+            .value
+            .trim();
+
+
+    const amount =
+        document
+            .getElementById(
+                "billAmount"
+            )
+            .value;
+
+
+    const frequency =
+        document
+            .getElementById(
+                "billFrequency"
+            )
+            .value;
+
+
+    const day =
+        Number(
+            document
+                .getElementById(
+                    "billWeekDay"
+                )
+                .value
+        );
+
+
+    const monthDay =
+        Number(
+            document
+                .getElementById(
+                    "billDay"
+                )
+                .value
+        );
+
+
+    if (!name) {
+
+        alert(
+            "Please enter the bill or payment."
+        );
+
+        return;
+
+    }
+
+
+    bills.push({
+
+        id: Date.now(),
+
+        name: name,
+
+        amount: amount,
+
+        frequency: frequency,
+
+        day: day,
+
+        monthDay: monthDay,
+
+        createdDate: todayString
+
+    });
+
+
+    saveBills();
+
+
+    document
+        .getElementById(
+            "billName"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "billAmount"
+        )
+        .value = "";
+
+
+    displayAll();
+
+}
+
+
+// ============================================
+// ADD BIRTHDAY
+// ============================================
+
+function addBirthday() {
+
+    const name =
+        document
+            .getElementById(
+                "birthdayName"
+            )
+            .value
+            .trim();
+
+
+    const date =
+        document
+            .getElementById(
+                "birthdayDate"
+            )
+            .value;
+
+
+    const year =
+        document
+            .getElementById(
+                "birthdayYear"
+            )
+            .value;
+
+
+    if (!name || !date) {
+
+        alert(
+            "Please enter the person's name and birthday."
+        );
+
+        return;
+
+    }
+
+
+    birthdays.push({
+
+        id: Date.now(),
+
+        name: name,
+
+        date: date,
+
+        birthYear:
+            year
+                ? Number(year)
+                : null
+
+    });
+
+
+    saveBirthdays();
+
+
+    document
+        .getElementById(
+            "birthdayName"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "birthdayDate"
+        )
+        .value = "";
+
+
+    document
+        .getElementById(
+            "birthdayYear"
+        )
+        .value = "";
+
+
+    displayAll();
+
+}
+
+
+// ============================================
+// RECURRING TASK DUE
+// ============================================
+
+function recurringTaskIsDue(
+    task,
+    dateString
+) {
+
+    const date =
+        new Date(
+            dateString +
+            "T00:00:00"
+        );
+
+
+    const day =
+        date.getDay();
+
+
+    const dayOfMonth =
+        date.getDate();
+
+
+    if (
+        task.frequency ===
+        "daily"
+    ) {
+
+        return true;
+
+    }
+
+
+    if (
+        task.frequency ===
+        "weekly"
+    ) {
+
+        return (
+            day === task.day
+        );
+
+    }
+
+
+    if (
+        task.frequency ===
+        "biweekly"
+    ) {
+
+        const created =
+            new Date(
+                task.createdDate +
+                "T00:00:00"
+            );
+
+
+        const difference =
+            Math.floor(
+                (
+                    date - created
+                ) /
+                (
+                    1000 *
+                    60 *
+                    60 *
+                    24
+                )
+            );
+
+
+        return (
+            day === task.day &&
+            difference >= 0 &&
+            difference % 14 === 0
+        );
+
+    }
+
+
+    if (
+        task.frequency ===
+        "monthly"
+    ) {
+
+        return (
+            dayOfMonth ===
+            task.monthDay
+        );
+
+    }
+
+
+    return false;
+
+}
+
+
+// ============================================
+// BILL DUE
+// ============================================
+
+function billIsDue(
+    bill,
+    dateString
+) {
+
+    const date =
+        new Date(
+            dateString +
+            "T00:00:00"
+        );
+
+
+    const day =
+        date.getDay();
+
+
+    const dayOfMonth =
+        date.getDate();
+
+
+    if (
+        bill.frequency ===
+        "weekly"
+    ) {
+
+        return (
+            day === bill.day
+        );
+
+    }
+
+
+    if (
+        bill.frequency ===
+        "biweekly"
+    ) {
+
+        const created =
+            new Date(
+                bill.createdDate +
+                "T00:00:00"
+            );
+
+
+        const difference =
+            Math.floor(
+                (
+                    date - created
+                ) /
+                (
+                    1000 *
+                    60 *
+                    60 *
+                    24
+                )
+            );
+
+
+        return (
+            day === bill.day &&
+            difference >= 0 &&
+            difference % 14 === 0
+        );
+
+    }
+
+
+    if (
+        bill.frequency ===
+        "monthly"
+    ) {
+
+        return (
+            dayOfMonth ===
+            bill.monthDay
+        );
+
+    }
+
+
+    if (
+        bill.frequency ===
+        "yearly"
+    ) {
+
+        const created =
+            new Date(
+                bill.createdDate +
+                "T00:00:00"
+            );
+
+
+        return (
+            date.getMonth() ===
+            created.getMonth() &&
+            dayOfMonth ===
+            bill.monthDay
+        );
+
+    }
+
+
+    return false;
+
+}
+
+
+// ============================================
+// GENERATE RECURRING TASK INSTANCES
+// ============================================
+
+function generateRecurringTasksForDate(
+    dateString
+) {
+
+    let changed = false;
+
+
+    recurringTasks.forEach(
+        recurring => {
+
+            if (
+                recurringTaskIsDue(
+                    recurring,
+                    dateString
+                )
+            ) {
+
+                const exists =
+                    tasks.some(
+                        task =>
+                            task.recurringInstance ===
+                                true &&
+                            task.recurringId ===
+                                recurring.id &&
+                            task.date ===
+                                dateString
+                    );
+
+
+                if (!exists) {
+
+                    tasks.push({
+
+                        id:
+                            Date.now() +
+                            Math.random(),
+
+                        name:
+                            recurring.name,
+
+                        date:
+                            dateString,
+
+                        completed:
+                            false,
+
+                        recurringInstance:
+                            true,
+
+                        recurringId:
+                            recurring.id
+
+                    });
+
+
+                    changed = true;
+
+                }
+
+            }
+
+        }
+    );
+
+
+    if (changed) {
+
+        saveTasks();
+
+    }
+
+}
+
+
+// ============================================
+// GENERATE BILL INSTANCES
+// ============================================
+
+function generateBillsForDate(
+    dateString
+) {
+
+    let changed = false;
+
+
+    bills.forEach(
+        bill => {
+
+            if (
+                billIsDue(
+                    bill,
+                    dateString
+                )
+            ) {
+
+                const exists =
+                    tasks.some(
+                        task =>
+                            task.paymentInstance ===
+                                true &&
+                            task.billId ===
+                                bill.id &&
+                            task.date ===
+                                dateString
+                    );
+
+
+                if (!exists) {
+
+                    tasks.push({
+
+                        id:
+                            Date.now() +
+                            Math.random(),
+
+                        name:
+                            bill.name,
+
+                        amount:
+                            bill.amount,
+
+                        date:
+                            dateString,
+
+                        completed:
+                            false,
+
+                        paymentInstance:
+                            true,
+
+                        billId:
+                            bill.id
+
+                    });
+
+
+                    changed = true;
+
+                }
+
+            }
+
+        }
+    );
+
+
+    if (changed) {
+
+        saveTasks();
+
+    }
+
+}
+
+
+// ============================================
+// DISPLAY ALL
+// ============================================
+
+function toggleSection(button) {
+    const content = button.nextElementSibling;
+
+    if (!content) return;
+
+    content.classList.toggle("collapsed");
+    button.classList.toggle("open");
+}
+
+function displayAll() {
+    generateRecurringTasksForDate(todayString);
+    generateBillsForDate(todayString);
+
+    displayTodayFocus();
+
+    displayTasks();
+    displayAppointments();
+    displayPayments();
+    displayUpcoming();
+    displayRecurringTasks();
+    displayBills();
+    displayBirthdays();
+
+    displayBrainDump();
+    displayTodayProgress();
+    displayDailyReset();
+}
+
+function quickCapture() {
+    const input = document.getElementById("quickCaptureInput");
+
+    if (!input) return;
+
+    const text = input.value.trim();
+
+    if (!text) return;
+
+    brainDump.push({
+        id: Date.now(),
+        text: text,
+        createdDate: todayString
+    });
+
+    saveBrainDump();
+
+    input.value = "";
+
+    displayBrainDump();
+}
+
+
+function startVoiceDump() {
+    const SpeechRecognition =
+        window.SpeechRecognition ||
+        window.webkitSpeechRecognition;
+
+    const status =
+        document.getElementById("voiceStatus");
+
+    if (!SpeechRecognition) {
+        status.textContent =
+            "Voice input isn't supported in this browser.";
+        return;
+    }
+
+    const recognition = new SpeechRecognition();
+
+    recognition.lang = "en-CA";
+    recognition.interimResults = false;
+    recognition.continuous = false;
+
+    status.textContent =
+        "🎤 Listening...";
+
+    recognition.onresult = function(event) {
+        const transcript =
+            event.results[0][0].transcript.trim();
+
+        if (!transcript) return;
+
+        brainDump.push({
+            id: Date.now(),
+            text: transcript,
+            createdDate: todayString
+        });
+
+        saveBrainDump();
+        displayBrainDump();
+
+        status.textContent =
+            "✓ Captured";
+    };
+
+    recognition.onerror = function() {
+        status.textContent =
+            "Voice capture didn't work. You can type it instead.";
+    };
+
+    recognition.onend = function() {
+        setTimeout(function() {
+            status.textContent = "";
+        }, 2000);
+    };
+
+    recognition.start();
+}
+
+
+function displayBrainDump() {
+    const container =
+        document.getElementById("brainDump");
+
+    if (!container) return;
+
+    if (brainDump.length === 0) {
+        container.innerHTML =
+            "<p>Nothing parked here. Your brain can breathe. 🌿</p>";
+        return;
+    }
+
+    container.innerHTML = "";
+
+    brainDump
+        .slice()
+        .reverse()
+        .forEach(function(item) {
+
+            const div =
+                document.createElement("div");
+
+            div.className = "dump-item";
+
+            div.innerHTML = `
+                <div class="dump-text">
+                    ${escapeHTML(item.text)}
+                </div>
+
+                <div class="dump-actions">
+                    <button
+                        class="small-button"
+                        onclick="moveDumpToTask(${item.id})">
+                        📋 Task
+                    </button>
+
+                    <button
+                        class="small-button"
+                        onclick="deleteDumpItem(${item.id})">
+                        Remove
+                    </button>
+                </div>
+            `;
+
+            container.appendChild(div);
+        });
+}
+
+
+function moveDumpToTask(id) {
+    const item =
+        brainDump.find(function(entry) {
+            return entry.id === id;
+        });
+
+    if (!item) return;
+
+    tasks.push({
+        id: Date.now(),
+        name: item.text,
+        date: todayString,
+        completed: false,
+        recurringInstance: false
+    });
+
+    brainDump =
+        brainDump.filter(function(entry) {
+            return entry.id !== id;
+        });
+
+    saveTasks();
+    saveBrainDump();
+
+    displayAll();
+}
+
+
+function deleteDumpItem(id) {
+    brainDump =
+        brainDump.filter(function(entry) {
+            return entry.id !== id;
+        });
+
+    saveBrainDump();
+
+    displayBrainDump();
+}
+
+
+// ============================================
+// TODAY TASKS
+// ============================================
+
+function displayTodayFocus() {
+    const container =
+        document.getElementById("todayFocus");
+
+    if (!container) return;
+
+    const todayTasks = tasks.filter(function(task) {
+        return (
+            task.date === todayString &&
+            !task.completed &&
+            !task.paymentInstance
+        );
+    });
+
+    const todayAppointments =
+        appointments.filter(function(appointment) {
+            return appointment.date === todayString;
+        });
+
+    if (
+        todayTasks.length === 0 &&
+        todayAppointments.length === 0
+    ) {
+        container.innerHTML = `
+            <div class="focus-priorities">
+                🌿 Nothing demanding your attention right now.
+                That's allowed. You don't have to manufacture
+                something to do.
+            </div>
+        `;
+        return;
+    }
+
+    let html = `
+        <div class="focus-priorities">
+    `;
+
+    if (todayAppointments.length > 0) {
+        html += `
+            <div class="priority-row">
+                📅 ${todayAppointments.length}
+                appointment${todayAppointments.length === 1 ? "" : "s"}
+                today
+            </div>
+        `;
+    }
+
+    if (todayTasks.length > 0) {
+        html += `
+            <div class="priority-row">
+                ✓ ${todayTasks.length}
+                task${todayTasks.length === 1 ? "" : "s"}
+                to deal with today
+            </div>
+        `;
+    }
+
+    html += `</div>`;
+
+    container.innerHTML = html;
+}
+
+
+function displayTodayProgress() {
+    const container =
+        document.getElementById("todayProgress");
+
+    if (!container) return;
+
+    const todayTasks =
+        tasks.filter(function(task) {
+            return (
+                task.date === todayString &&
+                !task.paymentInstance
+            );
+        });
+
+    const completed =
+        todayTasks.filter(function(task) {
+            return task.completed;
+        }).length;
+
+    const remaining =
+        todayTasks.filter(function(task) {
+            return !task.completed;
+        }).length;
+
+    container.innerHTML = `
+        <div class="progress-number">
+            ${completed}
+        </div>
+
+        <div class="progress-text">
+            ${completed === 0
+                ? "Nothing checked off yet. There's no rush."
+                : completed === 1
+                    ? "One thing done today."
+                    : completed + " things done today."
+            }
+
+            ${
+                remaining > 0
+                    ? `<br>${remaining} still open.`
+                    : "<br>Nothing left on today's task list. 🎉"
+            }
+        </div>
+    `;
+}
+
+function displayTasks() {
+
+    const container =
+        document.getElementById(
+            "todayTasks"
+        );
+
+
+    container.innerHTML = "";
+
+
+    const todaysTasks =
+        tasks.filter(
+            task =>
+                !task.completed &&
+                task.date ===
+                    todayString &&
+                !task.paymentInstance
+        );
+
+
+    if (
+        todaysTasks.length === 0
+    ) {
+
+        container.innerHTML =
+            '<p class="empty">' +
+            'Nothing scheduled today.' +
+            '</p>';
+
+        return;
+
+    }
+
+
+    todaysTasks.forEach(
+        task => {
+
+            container.appendChild(
+                createTaskElement(
+                    task,
+                    false
+                )
+            );
+
+        }
+    );
+
+}
+
+
+// ============================================
+// TODAY APPOINTMENTS
+// ============================================
+
+function displayAppointments() {
+
+    const container =
+        document.getElementById(
+            "todayAppointments"
+        );
+
+
+    container.innerHTML = "";
+
+
+    const appointmentsToday =
+        appointments
+            .filter(
+                appointment =>
+                    appointment.date ===
+                    todayString
+            )
+            .sort(
+                (a, b) =>
+                    a.time.localeCompare(
+                        b.time
+                    )
+            );
+
+
+    if (
+        appointmentsToday.length === 0
+    ) {
+
+        container.innerHTML =
+            '<p class="empty">' +
+            'No appointments today.' +
+            '</p>';
+
+        return;
+
+    }
+
+
+    appointmentsToday.forEach(
+        appointment => {
+
+            container.appendChild(
+                createAppointmentElement(
+                    appointment,
+                    false
+                )
+            );
+
+        }
+    );
+
+}
+
+
+// ============================================
+// TODAY PAYMENTS
+// ============================================
+
+function displayPayments() {
+
+    const container =
+        document.getElementById(
+            "todayPayments"
+        );
+
+
+    container.innerHTML = "";
+
+
+    const payments =
+        tasks.filter(
+            task =>
+                !task.completed &&
+                task.date ===
+                    todayString &&
+                task.paymentInstance
+        );
+
+
+    if (
+        payments.length === 0
+    ) {
+
+        container.innerHTML =
+            '<p class="empty">' +
+            'No payments due today.' +
+            '</p>';
+
+        return;
+
+    }
+
+
+    payments.forEach(
+        payment => {
+
+            const element =
+                document.createElement(
+                    "div"
+                );
+
+
+            element.className =
+                "task";
+
+
+            let amount = "";
+
+
+            if (
+                payment.amount
+            ) {
+
+                amount =
+                    " • $" +
+                    Number(
+                        payment.amount
+                    ).toFixed(2);
+
+            }
+
+
+            element.innerHTML = `
+
+                <div class="task-left">
+
+                    <input
+                        type="checkbox"
+                        onchange="
+                            completeTask(
+                                ${payment.id}
+                            )
+                        "
+                    >
+
+                    <div class="task-info">
+
+                        <strong>
+                            💳
+                            ${escapeHTML(
+                                payment.name
+                            )}
+                            ${amount}
+                        </strong>
+
+                    </div>
+
+                </div>
+
+                <button
+                    class="delete-button"
+                    type="button"
+                    onclick="
+                        deleteTask(
+                            ${payment.id}
+                        )
+                    ">
+
+                    Delete
+
+                </button>
+
+            `;
+
+
+            container.appendChild(
+                element
+            );
+
+        }
+    );
+
+}
+
+
+// ============================================
+// UPCOMING
+// ============================================
+
+function displayDailyReset() {
+    const container =
+        document.getElementById("dailyResetItems");
+
+    if (!container) return;
+
+    const openTasks = tasks.filter(function(task) {
+        return (
+            task.date === todayString &&
+            !task.completed &&
+            !task.paymentInstance
+        );
+    });
+
+    if (openTasks.length === 0) {
+        container.innerHTML = `
+            <div class="reset-actions">
+                🌿 Nothing needs closing out.
+                You're done for today.
+            </div>
+        `;
+        return;
+    }
+
+    container.innerHTML = "";
+
+    openTasks.forEach(function(task) {
+        const div =
+            document.createElement("div");
+
+        div.className = "dump-item";
+
+        div.innerHTML = `
+            <div class="dump-text">
+                ${escapeHTML(task.name)}
+            </div>
+
+            <div class="reset-actions">
+
+                <button
+                    class="reset-button"
+                    onclick="resetTask(${task.id}, 'done')">
+                    ✓ Done
+                </button>
+
+                <button
+                    class="reset-button"
+                    onclick="resetTask(${task.id}, 'tomorrow')">
+                    → Tomorrow
+                </button>
+
+                <button
+                    class="reset-button"
+                    onclick="resetTask(${task.id}, 'park')">
+                    🅿️ Park
+                </button>
+
+                <button
+                    class="reset-button"
+                    onclick="resetTask(${task.id}, 'delete')">
+                    Not important
+                </button>
+
+            </div>
+        `;
+
+        container.appendChild(div);
+    });
+}
+
+
+function resetTask(id, action) {
+    const task =
+        tasks.find(function(item) {
+            return item.id === id;
+        });
+
+    if (!task) return;
+
+    if (action === "done") {
+        task.completed = true;
+    }
+
+    if (action === "tomorrow") {
+        task.date = addDays(todayString, 1);
+    }
+
+    if (action === "park") {
+        brainDump.push({
+            id: Date.now(),
+            text: task.name,
+            createdDate: todayString
+        });
+
+        tasks =
+            tasks.filter(function(item) {
+                return item.id !== id;
+            });
+
+        saveBrainDump();
+    }
+
+    if (action === "delete") {
+        tasks =
+            tasks.filter(function(item) {
+                return item.id !== id;
+            });
+    }
+
+    saveTasks();
+
+    displayAll();
+}
+
+function displayUpcoming() {
+
+    const container =
+        document.getElementById(
+            "upcoming"
+        );
+
+
+    container.innerHTML = "";
+
+
+    const items = [];
+
+
+    tasks
+        .filter(
+            task =>
+                !task.completed &&
+                !task.paymentInstance &&
+                task.date > todayString &&
+                daysFromToday(
+                    task.date
+                ) <= 7
+        )
+        .forEach(
+            task => {
+
+                items.push({
+
+                    type: "task",
+
+                    date: task.date,
+
+                    time: null,
+
+                    item: task
+
+                });
+
+            }
+        );
+
+
+    appointments
+        .filter(
+            appointment =>
+                appointment.date >
+                    todayString &&
+                daysFromToday(
+                    appointment.date
+                ) <= 7
+        )
+        .forEach(
+            appointment => {
+
+                items.push({
+
+                    type: "appointment",
+
+                    date:
+                        appointment.date,
+
+                    time:
+                        appointment.time,
+
+                    item:
+                        appointment
+
+                });
+
+            }
+        );
+
+
+    for (
+        let i = 1;
+        i <= 7;
+        i++
+    ) {
+
+        const dateString =
+            addDays(
+                todayString,
+                i
+            );
+
+
+        recurringTasks.forEach(
+            recurring => {
+
+                if (
+                    recurringTaskIsDue(
+                        recurring,
+                        dateString
+                    )
+                ) {
+
+                    items.push({
+
+                        type:
+                            "task",
+
+                        date:
+                            dateString,
+
+                        time:
+                            null,
+
+                        item: {
+
+                            id:
+                                "future-" +
+                                recurring.id +
+                                "-" +
+                                dateString,
+
+                            name:
+                                recurring.name,
+
+                            date:
+                                dateString
+
+                        }
+
+                    });
+
+                }
+
+            }
+        );
+
+
+        bills.forEach(
+            bill => {
+
+                if (
+                    billIsDue(
+                        bill,
+                        dateString
+                    )
+                ) {
+
+                    items.push({
+
+                        type:
+                            "payment",
+
+                        date:
+                            dateString,
+
+                        time:
+                            null,
+
+                        item: {
+
+                            id:
+                                "future-bill-" +
+                                bill.id +
+                                "-" +
+                                dateString,
+
+                            name:
+                                bill.name,
+
+                            amount:
+                                bill.amount,
+
+                            date:
+                                dateString
+
+                        }
+
+                    });
+
+                }
+
+            }
+        );
+
+    }
+
+
+    items.sort(
+        (a, b) => {
+
+            if (
+                a.date !==
+                b.date
+            ) {
+
+                return a.date.localeCompare(
+                    b.date
+                );
+
+            }
+
+
+            return (
+                a.time || ""
+            ).localeCompare(
+                b.time || ""
+            );
+
+        }
+    );
+
+
+    if (
+        items.length === 0
+    ) {
+
+        container.innerHTML =
+            '<p class="empty">' +
+            'Nothing coming up this week.' +
+            '</p>';
+
+        return;
+
+    }
+
+
+    items.forEach(
+        entry => {
+
+            if (
+                entry.type ===
+                "task"
+            ) {
+
+                container.appendChild(
+                    createTaskElement(
+                        entry.item,
+                        true
+                    )
+                );
+
+            }
+
+
+            else if (
+                entry.type ===
+                "appointment"
+            ) {
+
+                container.appendChild(
+                    createAppointmentElement(
+                        entry.item,
+                        true
+                    )
+                );
+
+            }
+
+
+            else if (
+                entry.type ===
+                "payment"
+            ) {
+
+                container.appendChild(
+                    createPaymentPreview(
+                        entry.item
+                    )
+                );
+
+            }
+
+        }
+    );
+
+}
+
+
+// ============================================
+// RECURRING TASKS DISPLAY
+// ============================================
+
+function displayRecurringTasks() {
+
+    const container =
+        document.getElementById(
+            "recurringTasks"
+        );
+
+
+    container.innerHTML = "";
+
+
+    if (
+        recurringTasks.length === 0
+    ) {
+
+        container.innerHTML =
+            '<p class="empty">' +
+            'No recurring tasks yet.' +
+            '</p>';
+
+        return;
+
+    }
+
+
+    recurringTasks.forEach(
+        task => {
+
+            const element =
+                document.createElement(
+                    "div"
+                );
+
+
+            element.className =
+                "task";
+
+
+            let description =
+                "";
+
+
+            if (
+                task.frequency ===
+                "daily"
+            ) {
+
+                description =
+                    "Every day";
+
+            }
+
+
+            else if (
+                task.frequency ===
+                "weekly"
+            ) {
+
+                description =
+                    "Every week • " +
+                    dayName(
+                        task.day
+                    );
+
+            }
+
+
+            else if (
+                task.frequency ===
+                "biweekly"
+            ) {
+
+                description =
+                    "Every 2 weeks • " +
+                    dayName(
+                        task.day
+                    );
+
+            }
+
+
+            else if (
+                task.frequency ===
+                "monthly"
+            ) {
+
+                description =
+                    "Every month • " +
+                    ordinal(
+                        task.monthDay
+                    );
+
+            }
+
+
+            element.innerHTML = `
+
+                <div class="task-info">
+
+                    <strong>
+                        ${escapeHTML(
+                            task.name
+                        )}
+                    </strong>
+
+                    <span class="task-date">
+                        ${description}
+                    </span>
+
+                </div>
+
+                <button
+                    class="delete-button"
+                    type="button"
+                    onclick="
+                        deleteRecurringTask(
+                            ${task.id}
+                        )
+                    ">
+
+                    Delete
+
+                </button>
+
+            `;
+
+
+            container.appendChild(
+                element
+            );
+
+        }
+    );
+
+}
+
+
+// ============================================
+// BILLS DISPLAY
+// ============================================
+
+function displayBills() {
+
+    const container =
+        document.getElementById(
+            "bills"
+        );
+
+
+    container.innerHTML = "";
+
+
+    if (
+        bills.length === 0
+    ) {
+
+        container.innerHTML =
+            '<p class="empty">' +
+            'No recurring bills yet.' +
+            '</p>';
+
+        return;
+
+    }
+
+
+    bills.forEach(
+        bill => {
+
+            const element =
+                document.createElement(
+                    "div"
+                );
+
+
+            element.className =
+                "task";
+
+
+            let description =
+                "";
+
+
+            if (
+                bill.frequency ===
+                "weekly"
+            ) {
+
+                description =
+                    "Every week • " +
+                    dayName(
+                        bill.day
+                    );
+
+            }
+
+
+            else if (
+                bill.frequency ===
+                "biweekly"
+            ) {
+
+                description =
+                    "Every 2 weeks • " +
+                    dayName(
+                        bill.day
+                    );
+
+            }
+
+
+            else if (
+                bill.frequency ===
+                "monthly"
+            ) {
+
+                description =
+                    "Every month • " +
+                    ordinal(
+                        bill.monthDay
+                    );
+
+            }
+
+
+            else if (
+                bill.frequency ===
+                "yearly"
+            ) {
+
+                description =
+                    "Every year • " +
+                    ordinal(
+                        bill.monthDay
+                    );
+
+            }
+
+
+            let amount = "";
+
+
+            if (
+                bill.amount
+            ) {
+
+                amount =
+                    " • $" +
+                    Number(
+                        bill.amount
+                    ).toFixed(2);
+
+            }
+
+
+            element.innerHTML = `
+
+                <div class="task-info">
+
+                    <strong>
+                        💳
+                        ${escapeHTML(
+                            bill.name
+                        )}
+                        ${amount}
+                    </strong>
+
+                    <span class="task-date">
+                        ${description}
+                    </span>
+
+                </div>
+
+                <button
+                    class="delete-button"
+                    type="button"
+                    onclick="
+                        deleteBill(
+                            ${bill.id}
+                        )
+                    ">
+
+                    Delete
+
+                </button>
+
+            `;
+
+
+            container.appendChild(
+                element
+            );
+
+        }
+    );
+
+}
+
+
+// ============================================
+// BIRTHDAYS DISPLAY
+// ============================================
+
+function displayBirthdays() {
+
+    const container =
+        document.getElementById(
+            "birthdays"
+        );
+
+
+    container.innerHTML = "";
+
+
+    if (
+        birthdays.length === 0
+    ) {
+
+        container.innerHTML =
+            '<p class="empty">' +
+            'No birthdays added yet.' +
+            '</p>';
+
+        return;
+
+    }
+
+
+    const today =
+        new Date(
+            todayString +
+            "T00:00:00"
+        );
+
+
+    const currentYear =
+        today.getFullYear();
+
+
+    const birthdayList =
+        birthdays
+            .map(
+                birthday => {
+
+                    const original =
+                        new Date(
+                            birthday.date +
+                            "T00:00:00"
+                        );
+
+
+                    let nextBirthday =
+                        new Date(
+                            currentYear,
+                            original.getMonth(),
+                            original.getDate()
+                        );
+
+
+                    if (
+                        nextBirthday <
+                        today
+                    ) {
+
+                        nextBirthday =
+                            new Date(
+                                currentYear + 1,
+                                original.getMonth(),
+                                original.getDate()
+                            );
+
+                    }
+
+
+                    return {
+
+                        birthday:
+                            birthday,
+
+                        nextBirthday:
+                            nextBirthday
+
+                    };
+
+                }
+            )
+            .sort(
+                (a, b) =>
+                    a.nextBirthday -
+                    b.nextBirthday
+            );
+
+
+    birthdayList.forEach(
+        entry => {
+
+            const birthday =
+                entry.birthday;
+
+
+            const nextBirthday =
+                entry.nextBirthday;
+
+
+            let ageText = "";
+
+
+            if (
+                birthday.birthYear
+            ) {
+
+                let age =
+                    nextBirthday.getFullYear() -
+                    birthday.birthYear;
+
+
+                ageText =
+                    " • Turning " +
+                    age;
+
+            }
+
+
+            const element =
+                document.createElement(
+                    "div"
+                );
+
+
+            element.className =
+                "task";
+
+
+            element.innerHTML = `
+
+                <div class="task-info">
+
+                    <strong>
+                        🎂
+                        ${escapeHTML(
+                            birthday.name
+                        )}
+                        ${ageText}
+                    </strong>
+
+                    <span class="task-date">
+                        ${nextBirthday.toLocaleDateString(
+                            "en-CA",
+                            {
+                                month: "short",
+                                day: "numeric"
+                            }
+                        )}
+                    </span>
+
+                </div>
+
+
+                <button
+                    class="delete-button"
+                    type="button"
+                    onclick="
+                        deleteBirthday(
+                            ${birthday.id}
+                        )
+                    ">
+
+                    Delete
+
+                </button>
+
+            `;
+
+
+            container.appendChild(
+                element
+            );
+
+        }
+    );
+
+}
+
+
+// ============================================
+// TASK ELEMENT
+// ============================================
+
+function createTaskElement(
+    task,
+    showDate
+) {
+
+    const element =
+        document.createElement(
+            "div"
+        );
+
+
+    element.className =
+        "task";
+
+
+    let dateHTML = "";
+
+
+    if (showDate) {
+
+        dateHTML =
+            `<span class="task-date">
+                ${formatDate(
+                    task.date
+                )}
+            </span>`;
+
+    }
+
+
+    element.innerHTML = `
+
+        <div class="task-left">
+
+            <input
+                type="checkbox"
+                onchange="
+                    completeTask(
+                        ${task.id}
+                    )
+                "
+            >
+
+            <div class="task-info">
+
+                <strong>
+                    ${escapeHTML(
+                        task.name
+                    )}
+                </strong>
+
+                ${dateHTML}
+
+            </div>
+
+        </div>
+
+
+        <button
+            class="delete-button"
+            type="button"
+            onclick="
+                deleteTask(
+                    ${task.id}
+                )
+            ">
+
+            Delete
+
+        </button>
+
+    `;
+
+
+    return element;
+
+}
+
+
+// ============================================
+// APPOINTMENT ELEMENT
+// ============================================
+
+function createAppointmentElement(
+    appointment,
+    showDate
+) {
+
+    const element =
+        document.createElement(
+            "div"
+        );
+
+
+    element.className =
+        "task";
+
+
+    let dateHTML = "";
+
+
+    if (showDate) {
+
+        dateHTML =
+            `<span class="task-date">
+                ${formatDate(
+                    appointment.date
+                )}
+            </span>`;
+
+    }
+
+
+    element.innerHTML = `
+
+        <div class="task-info">
+
+            <strong>
+                🕐
+                ${formatTime(
+                    appointment.time
+                )}
+                —
+                ${escapeHTML(
+                    appointment.name
+                )}
+            </strong>
+
+            ${dateHTML}
+
+        </div>
+
+
+        <button
+            class="delete-button"
+            type="button"
+            onclick="
+                deleteAppointment(
+                    ${appointment.id}
+                )
+            ">
+
+            Delete
+
+        </button>
+
+    `;
+
+
+    return element;
+
+}
+
+
+// ============================================
+// PAYMENT PREVIEW
+// ============================================
+
+function createPaymentPreview(
+    payment
+) {
+
+    const element =
+        document.createElement(
+            "div"
+        );
+
+
+    element.className =
+        "task";
+
+
+    let amount = "";
+
+
+    if (
+        payment.amount
+    ) {
+
+        amount =
+            " • $" +
+            Number(
+                payment.amount
+            ).toFixed(2);
+
+    }
+
+
+    element.innerHTML = `
+
+        <div class="task-info">
+
+            <strong>
+                💳
+                ${escapeHTML(
+                    payment.name
+                )}
+                ${amount}
+            </strong>
+
+            <span class="task-date">
+                ${formatDate(
+                    payment.date
+                )}
+            </span>
+
+        </div>
+
+    `;
+
+
+    return element;
+
+}
+
+
+// ============================================
+// COMPLETE TASK
+// ============================================
+
+function completeTask(id) {
+
+    const task =
+        tasks.find(
+            task =>
+                task.id === id
+        );
+
+
+    if (!task) {
+
+        return;
+
+    }
+
+
+    task.completed =
+        true;
+
+
+    saveTasks();
+
+
+    displayAll();
+
+}
+
+
+// ============================================
+// DELETE TASK
+// ============================================
+
+function deleteTask(id) {
+
+    tasks =
+        tasks.filter(
+            task =>
+                task.id !== id
+        );
+
+
+    saveTasks();
+
+
+    displayAll();
+
+}
+
+
+// ============================================
+// DELETE RECURRING
+// ============================================
+
+function deleteRecurringTask(id) {
+
+    recurringTasks =
+        recurringTasks.filter(
+            task =>
+                task.id !== id
+        );
+
+
+    saveRecurringTasks();
+
+
+    displayAll();
+
+}
+
+
+// ============================================
+// DELETE APPOINTMENT
+// ============================================
+
+function deleteAppointment(id) {
+
+    appointments =
+        appointments.filter(
+            appointment =>
+                appointment.id !== id
+        );
+
+
+    saveAppointments();
+
+
+    displayAll();
+
+}
+
+
+// ============================================
+// DELETE BILL
+// ============================================
+
+function deleteBill(id) {
+
+    bills =
+        bills.filter(
+            bill =>
+                bill.id !== id
+        );
+
+
+    saveBills();
+
+
+    displayAll();
+
+}
+
+
+// ============================================
+// DELETE BIRTHDAY
+// ============================================
+
+function deleteBirthday(id) {
+
+    birthdays =
+        birthdays.filter(
+            birthday =>
+                birthday.id !== id
+        );
+
+
+    saveBirthdays();
+
+
+    displayAll();
+
+}
+
+
+// ============================================
+// FORM OPTIONS
+// ============================================
+
+function updateRecurringFields() {
+
+    const frequency =
+        document
+            .getElementById(
+                "recurringFrequency"
+            )
+            .value;
+
+
+    const dayField =
+        document.getElementById(
+            "recurringDayField"
+        );
+
+
+    const monthField =
+        document.getElementById(
+            "recurringMonthField"
+        );
+
+
+    if (
+        frequency ===
+        "monthly"
+    ) {
+
+        dayField.classList.add(
+            "hidden"
+        );
+
+        monthField.classList.remove(
+            "hidden"
+        );
+
+    }
+
+
+    else if (
+        frequency ===
+        "daily"
+    ) {
+
+        dayField.classList.add(
+            "hidden"
+        );
+
+        monthField.classList.add(
+            "hidden"
+        );
+
+    }
+
+
+    else {
+
+        dayField.classList.remove(
+            "hidden"
+        );
+
+        monthField.classList.add(
+            "hidden"
+        );
+
+    }
+
+}
+
+
+function updateBillFields() {
+
+    const frequency =
+        document
+            .getElementById(
+                "billFrequency"
+            )
+            .value;
+
+
+    const monthField =
+        document.getElementById(
+            "billMonthField"
+        );
+
+
+    const weekField =
+        document.getElementById(
+            "billWeekField"
+        );
+
+
+    if (
+        frequency ===
+            "monthly" ||
+        frequency ===
+            "yearly"
+    ) {
+
+        monthField.classList.remove(
+            "hidden"
+        );
+
+        weekField.classList.add(
+            "hidden"
+        );
+
+    }
+
+
+    else {
+
+        monthField.classList.add(
+            "hidden"
+        );
+
+        weekField.classList.remove(
+            "hidden"
+        );
+
+    }
+
+}
+
+
+// ============================================
+// DATE UTILITIES
+// ============================================
+
+function daysFromToday(
+    dateString
+) {
+
+    const date =
+        new Date(
+            dateString +
+            "T00:00:00"
+        );
+
+
+    const today =
+        new Date(
+            todayString +
+            "T00:00:00"
+        );
+
+
+    return Math.round(
+        (
+            date - today
+        ) /
+        (
+            1000 *
+            60 *
+            60 *
+            24
+        )
+    );
+
+}
+
+
+function addDays(
+    dateString,
+    number
+) {
+
+    const date =
+        new Date(
+            dateString +
+            "T00:00:00"
+        );
+
+
+    date.setDate(
+        date.getDate() +
+        number
+    );
+
+
+    const year =
+        date.getFullYear();
+
+
+    const month =
+        String(
+            date.getMonth() + 1
+        ).padStart(2, "0");
+
+
+    const day =
+        String(
+            date.getDate()
+        ).padStart(2, "0");
+
+
+    return `${year}-${month}-${day}`;
+
+}
+
+
+function formatDate(
+    dateString
+) {
+
+    const date =
+        new Date(
+            dateString +
+            "T00:00:00"
+        );
+
+
+    return date.toLocaleDateString(
+        "en-CA",
+        {
+            weekday: "short",
+            month: "short",
+            day: "numeric"
+        }
+    );
+
+}
+
+
+function dayName(day) {
+
+    const days = [
+
+        "Sunday",
+        "Monday",
+        "Tuesday",
+        "Wednesday",
+        "Thursday",
+        "Friday",
+        "Saturday"
+
+    ];
+
+
+    return days[day];
+
+}
+
+
+function ordinal(number) {
+
+    const remainder10 =
+        number % 10;
+
+    const remainder100 =
+        number % 100;
+
+
+    if (
+        remainder10 === 1 &&
+        remainder100 !== 11
+    ) {
+
+        return number + "st";
+
+    }
+
+
+    if (
+        remainder10 === 2 &&
+        remainder100 !== 12
+    ) {
+
+        return number + "nd";
+
+    }
+
+
+    if (
+        remainder10 === 3 &&
+        remainder100 !== 13
+    ) {
+
+        return number + "rd";
+
+    }
+
+
+    return number + "th";
+
+}
+
+
+function formatTime(time) {
+
+    const parts =
+        time.split(":");
+
+
+    let hour =
+        parseInt(
+            parts[0],
+            10
+        );
+
+
+    const minutes =
+        parts[1];
+
+
+    const ampm =
+        hour >= 12
+            ? "PM"
+            : "AM";
+
+
+    hour =
+        hour % 12 || 12;
+
+
+    return `${hour}:${minutes} ${ampm}`;
+
+}
+
+
+function escapeHTML(text) {
+
+    const div =
+        document.createElement(
+            "div"
+        );
+
+
+    div.textContent =
+        text;
+
+
+    return div.innerHTML;
+
+}
+
+
+// ============================================
+// START
+// ============================================
+
+updateRecurringFields();
+
+updateBillFields();
+
+displayAll();
+
+</script>
+
+
+</body>
+
+</html>
