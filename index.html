@@ -639,6 +639,20 @@ select {
 
 }
 
+   .today-progress {
+    margin-top: 12px;
+    padding: 8px 12px;
+    background: #f5f5f5;
+    border-radius: 8px;
+    color: #666;
+    font-size: 14px;
+    text-align: center;
+}
+
+.today-progress strong {
+    color: #444;
+}
+
 /* ================================
    COLLAPSIBLE APP SECTIONS
    ================================ */
@@ -737,6 +751,8 @@ select {
     </p>
 
     <div id="todayFocus"></div>
+
+    <div id="todayProgress" class="today-progress"></div>
 
     <div class="quick-capture">
         <input
@@ -2593,7 +2609,7 @@ function displayAll() {
     generateBillsForDate(todayString);
 
     displayTodayFocus();
-
+    displayTodayProgress();
     displayTasks();
     displayAppointments();
     displayPayments();
@@ -2852,39 +2868,25 @@ function displayTodayProgress() {
         tasks.filter(function(task) {
             return (
                 task.date === todayString &&
-                !task.paymentInstance
+                !task.paymentInstance &&
+                task.completed
             );
         });
 
-    const completed =
-        todayTasks.filter(function(task) {
-            return task.completed;
-        }).length;
+    const completed = todayTasks.length;
 
-    const remaining =
-        todayTasks.filter(function(task) {
-            return !task.completed;
-        }).length;
+    if (completed === 0) {
+        container.innerHTML =
+            "🌱 Your day is just getting started";
+        return;
+    }
 
     container.innerHTML = `
-        <div class="progress-number">
+        🎉 <strong>
             ${completed}
-        </div>
-
-        <div class="progress-text">
-            ${completed === 0
-                ? "Nothing checked off yet. There's no rush."
-                : completed === 1
-                    ? "One thing done today."
-                    : completed + " things done today."
-            }
-
-            ${
-                remaining > 0
-                    ? `<br>${remaining} still open.`
-                    : "<br>Nothing left on today's task list. 🎉"
-            }
-        </div>
+            ${completed === 1 ? "thing" : "things"}
+            done today
+        </strong>
     `;
 }
 
