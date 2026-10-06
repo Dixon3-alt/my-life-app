@@ -1998,7 +1998,13 @@ function addRecurringTask() {
                 )
                 .value
         );
-
+   
+     const startDate =
+    document
+        .getElementById(
+            "recurringStartDate"
+        )
+        .value;
 
     if (!name) {
 
@@ -2022,6 +2028,8 @@ function addRecurringTask() {
         day: day,
 
         monthDay: monthDay,
+
+        startDate: startDate,
 
         createdDate: todayString
 
