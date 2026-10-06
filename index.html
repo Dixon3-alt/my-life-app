@@ -1129,6 +1129,15 @@ Start date
     id="recurringStartDate"
 >   
 
+<label for="recurringTime">
+Time (optional)
+</label>
+
+<input
+    type="time"
+    id="recurringTime"
+>   
+
 <div id="recurringDayField">
 
 <label for="recurringDay">
@@ -2000,9 +2009,16 @@ function addRecurringTask() {
         );
    
      const startDate =
-    document
+         document
         .getElementById(
             "recurringStartDate"
+        )
+        .value;
+
+   const time =
+       document
+        .getElementById(
+            "recurringTime"
         )
         .value;
 
@@ -2030,6 +2046,8 @@ function addRecurringTask() {
         monthDay: monthDay,
 
         startDate: startDate,
+
+        time: time,
 
         createdDate: todayString
 
