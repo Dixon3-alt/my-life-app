@@ -2250,12 +2250,21 @@ function recurringTaskIsDue(
     dateString
 ) {
 
+    if (
+        task.startDate &&
+        dateString < task.startDate
+    ) {
+
+        return false;
+
+    }
+
+
     const date =
         new Date(
             dateString +
             "T00:00:00"
         );
-
 
     const day =
         date.getDay();
