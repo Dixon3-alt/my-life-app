@@ -3516,10 +3516,13 @@ function displayUpcoming() {
             ) {
 
                 container.appendChild(
-                    createTaskElement(
-                        entry.item,
-                        true
-                    )
+               createTaskElement(
+    entry.item,
+    true,
+    !String(
+        entry.item.id
+    ).startsWith("future-")
+)
                 );
 
             }
@@ -4083,7 +4086,8 @@ function displayBirthdays() {
 
 function createTaskElement(
     task,
-    showDate
+    showDate,
+    showDelete = true
 ) {
 
     const element =
@@ -4139,21 +4143,18 @@ function createTaskElement(
         </div>
 
 
-        <button
-            class="delete-button"
-            type="button"
-            onclick="
-                deleteTask(
-                    ${task.id}
-                )
-            ">
-
-            Delete
-
-        </button>
-
-    `;
-
+              ${showDelete ? `
+            <button
+                class="delete-button"
+                type="button"
+                onclick="
+                    deleteTask(
+                        ${task.id}
+                    )
+                ">
+                Delete
+            </button>
+        ` : ""}
 
     return element;
 
