@@ -3516,7 +3516,7 @@ function displayUpcoming() {
             ) {
 
                 container.appendChild(
-               createTaskElement(
+   createTaskElement(
     entry.item,
     true,
     !String(
@@ -4143,7 +4143,7 @@ function createTaskElement(
         </div>
 
 
-              ${showDelete ? `
+                    ${showDelete ? `
             <button
                 class="delete-button"
                 type="button"
@@ -4156,10 +4156,12 @@ function createTaskElement(
             </button>
         ` : ""}
 
+    `;
+
+
     return element;
 
 }
-
 
 // ============================================
 // APPOINTMENT ELEMENT
