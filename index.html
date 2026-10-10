@@ -2367,12 +2367,40 @@ function recurringTaskIsDue(
                     task.createdDate
                 ) +
                 "T00:00:00"
+           
+    if (
+        task.frequency ===
+        "fourweekly"
+    ) {
+
+        const anchorDate =
+            new Date(
+                (
+                    task.startDate ||
+                    task.createdDate
+                ) +
+                "T00:00:00"
             );
+
+        const daysUntilTaskDay =
+            (
+                task.day -
+                anchorDate.getDay() +
+                7
+            ) % 7;
+
+        const firstDueDate =
+            new Date(anchorDate);
+
+        firstDueDate.setDate(
+            firstDueDate.getDate() +
+            daysUntilTaskDay
+        );
 
         const difference =
             Math.floor(
                 (
-                    date - anchorDate
+                    date - firstDueDate
                 ) /
                 (
                     1000 *
@@ -2383,12 +2411,12 @@ function recurringTaskIsDue(
             );
 
         return (
-            day === task.day &&
             difference >= 0 &&
             difference % 28 === 0
         );
 
     }
+
  
 
 
