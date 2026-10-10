@@ -4360,7 +4360,7 @@ function deleteRecurringTask(id) {
     recurringTasks =
         recurringTasks.filter(
             task =>
-                task.id !== id
+                String(task.id) !== String(id)
         );
 
 
