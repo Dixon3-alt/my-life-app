@@ -2354,6 +2354,43 @@ function recurringTaskIsDue(
 
     }
 
+        
+    if (
+        task.frequency ===
+        "fourweekly"
+    ) {
+
+        const anchorDate =
+            new Date(
+                (
+                    task.startDate ||
+                    task.createdDate
+                ) +
+                "T00:00:00"
+            );
+
+        const difference =
+            Math.floor(
+                (
+                    date - anchorDate
+                ) /
+                (
+                    1000 *
+                    60 *
+                    60 *
+                    24
+                )
+            );
+
+        return (
+            day === task.day &&
+            difference >= 0 &&
+            difference % 28 === 0
+        );
+
+    }
+ 
+
 
     if (
         task.frequency ===
