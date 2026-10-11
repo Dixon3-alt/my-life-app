@@ -2320,22 +2320,40 @@ function recurringTaskIsDue(
     }
 
 
+   
     if (
         task.frequency ===
         "biweekly"
     ) {
 
-        const created =
+        const anchorDate =
             new Date(
-                task.createdDate +
+                (
+                    task.startDate ||
+                    task.createdDate
+                ) +
                 "T00:00:00"
             );
 
+        const daysUntilTaskDay =
+            (
+                task.day -
+                anchorDate.getDay() +
+                7
+            ) % 7;
+
+        const firstDueDate =
+            new Date(anchorDate);
+
+        firstDueDate.setDate(
+            firstDueDate.getDate() +
+            daysUntilTaskDay
+        );
 
         const difference =
             Math.floor(
                 (
-                    date - created
+                    date - firstDueDate
                 ) /
                 (
                     1000 *
@@ -2345,14 +2363,13 @@ function recurringTaskIsDue(
                 )
             );
 
-
         return (
-            day === task.day &&
             difference >= 0 &&
             difference % 14 === 0
         );
 
     }
+
 
         
            
