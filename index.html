@@ -3722,7 +3722,19 @@ function displayRecurringTasks() {
 
             }
 
+            else if (
+                task.frequency ===
+                "fourweekly"
+            ) {
 
+                description =
+                    "Every 4 weeks • " +
+                    dayName(
+                        task.day
+                    );
+
+            }
+               
             else if (
                 task.frequency ===
                 "monthly"
