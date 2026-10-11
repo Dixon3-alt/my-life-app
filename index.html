@@ -1712,6 +1712,23 @@ function savePriorities() {
 
 function showForm(type) {
 
+       if (
+        type !== "recurring" &&
+        editingRecurringTaskId !== null
+    ) {
+
+        editingRecurringTaskId = null;
+
+        document.getElementById(
+            "recurringSubmitButton"
+        ).textContent = "Add Recurring Task";
+
+        document.getElementById(
+            "recurringTaskName"
+        ).value = "";
+
+    }
+
     const forms = [
 
         "taskForm",
