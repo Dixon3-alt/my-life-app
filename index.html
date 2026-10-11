@@ -2099,6 +2099,11 @@ function addRecurringTask() {
         )
         .value = "";
 
+       document.getElementById(
+        "recurringSubmitButton"
+    ).textContent = "Add Recurring Task";
+
+    editingRecurringTaskId = null;
 
     displayAll();
 
@@ -2154,6 +2159,10 @@ function editRecurringTask(id) {
     document.getElementById(
         "recurringTaskName"
     ).focus();
+
+    document.getElementById(
+        "recurringSubmitButton"
+    ).textContent = "Save Changes";
 
 }   
 
