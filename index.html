@@ -2103,6 +2103,58 @@ function addRecurringTask() {
 
 }
 
+// ============================================
+// EDIT RECURRING TASK
+// ============================================
+
+function editRecurringTask(id) {
+
+    const task =
+        recurringTasks.find(
+            item =>
+                String(item.id) ===
+                String(id)
+        );
+
+    if (!task) {
+        return;
+    }
+
+    editingRecurringTaskId = task.id;
+
+    document.getElementById(
+        "recurringTaskName"
+    ).value = task.name || "";
+
+    document.getElementById(
+        "recurringFrequency"
+    ).value = task.frequency || "daily";
+
+    document.getElementById(
+        "recurringDay"
+    ).value = task.day ?? 0;
+
+    document.getElementById(
+        "recurringMonthDay"
+    ).value = task.monthDay ?? 1;
+
+    document.getElementById(
+        "recurringStartDate"
+    ).value = task.startDate || "";
+
+    document.getElementById(
+        "recurringTime"
+    ).value = task.time || "";
+
+    updateRecurringFields();
+
+    showForm("recurring");
+
+    document.getElementById(
+        "recurringTaskName"
+    ).focus();
+
+}   
 
 // ============================================
 // ADD BILL
