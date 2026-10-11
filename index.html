@@ -1605,6 +1605,7 @@ let recurringTasks =
         )
     ) || [];
 
+let editingRecurringTaskId = null;   
 
 let bills =
     JSON.parse(
@@ -2039,25 +2040,53 @@ function addRecurringTask() {
     }
 
 
-    recurringTasks.push({
+      if (
+        editingRecurringTaskId !== null
+    ) {
 
-        id: Date.now(),
+        const existingTask =
+            recurringTasks.find(
+                task =>
+                    String(task.id) ===
+                    String(editingRecurringTaskId)
+            );
 
-        name: name,
+        if (existingTask) {
 
-        frequency: frequency,
+            existingTask.name = name;
+            existingTask.frequency = frequency;
+            existingTask.day = day;
+            existingTask.monthDay = monthDay;
+            existingTask.startDate = startDate;
+            existingTask.time = time;
 
-        day: day,
+        }
 
-        monthDay: monthDay,
+        editingRecurringTaskId = null;
 
-        startDate: startDate,
+    } else {
 
-        time: time,
+        recurringTasks.push({
 
-        createdDate: todayString
+            id: Date.now(),
 
-    });
+            name: name,
+
+            frequency: frequency,
+
+            day: day,
+
+            monthDay: monthDay,
+
+            startDate: startDate,
+
+            time: time,
+
+            createdDate: todayString
+
+        });
+
+    }
 
 
     saveRecurringTasks();
