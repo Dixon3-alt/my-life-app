@@ -4595,6 +4595,46 @@ function completeTask(id) {
 }
 
 
+ // ============================================
+ // EDIT TASK
+ // ============================================
+
+function editTask(id) {
+
+    const task =
+        tasks.find(
+            task =>
+                String(task.id) ===
+                String(id)
+        );
+
+    if (!task) {
+        return;
+    }
+
+    editingTaskId = task.id;
+
+    document.getElementById(
+        "taskName"
+    ).value = task.name;
+
+    document.getElementById(
+        "taskDate"
+    ).value = task.date;
+
+    showForm("task");
+
+    document.getElementById(
+        "taskSubmitButton"
+    ).textContent = "Save Changes";
+
+    document.getElementById(
+        "taskName"
+    ).focus();
+
+}
+
+   
 // ============================================
 // DELETE TASK
 // ============================================
