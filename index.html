@@ -1715,6 +1715,28 @@ function savePriorities() {
 
 function showForm(type) {
 
+       
+    if (
+        type !== "task" &&
+        editingTaskId !== null
+    ) {
+
+        editingTaskId = null;
+
+        document.getElementById(
+            "taskSubmitButton"
+        ).textContent = "Add Task";
+
+        document.getElementById(
+            "taskName"
+        ).value = "";
+
+        document.getElementById(
+            "taskDate"
+        ).value = "";
+
+    }
+
        if (
         type !== "recurring" &&
         editingRecurringTaskId !== null
