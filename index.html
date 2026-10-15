@@ -1872,20 +1872,41 @@ function addTask() {
     }
 
 
-    tasks.push({
+       if (editingTaskId !== null) {
 
-        id: Date.now(),
+        const existingTask =
+            tasks.find(
+                task =>
+                    String(task.id) ===
+                    String(editingTaskId)
+            );
 
-        name: name,
+        if (existingTask) {
 
-        date: date,
+            existingTask.name = name;
+            existingTask.date = date;
 
-        completed: false,
+        }
 
-        recurringInstance: false
+        editingTaskId = null;
 
-    });
+    } else {
 
+        tasks.push({
+
+            id: Date.now(),
+
+            name: name,
+
+            date: date,
+
+            completed: false,
+
+            recurringInstance: false
+
+        });
+
+    }
 
     saveTasks();
 
