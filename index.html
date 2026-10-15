@@ -1941,14 +1941,19 @@ function addTask() {
         .value = "";
 
 
+   
     document
         .getElementById(
             "taskDate"
         )
         .value = "";
 
+    document.getElementById(
+        "taskSubmitButton"
+    ).textContent = "Add Task";
 
     displayAll();
+
 
 }
 
