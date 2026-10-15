@@ -4376,18 +4376,25 @@ function createTaskElement(
 
         </div>
 
+        
         ${showDelete ? `
-            <button
-                class="delete-button"
-                type="button"
-                onclick="
-                    deleteTask(
-                        ${task.id}
-                    )
-                ">
-                Delete
-            </button>
+            <div class="task-actions">
+                <button
+                    class="delete-button"
+                    type="button"
+                    onclick="editTask(${task.id})">
+                    Edit
+                </button>
+
+                <button
+                    class="delete-button"
+                    type="button"
+                    onclick="deleteTask(${task.id})">
+                    Delete
+                </button>
+            </div>
         ` : ""}
+
 
     `;
 
