@@ -2921,6 +2921,8 @@ function toggleSection(button) {
 }
 
 function displayAll() {
+    carryForwardTasks();
+   
     generateRecurringTasksForDate(todayString);
     generateBillsForDate(todayString);
 
