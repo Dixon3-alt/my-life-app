@@ -2875,6 +2875,37 @@ function generateBillsForDate(
 
 }
 
+// ============================================
+// CARRY FORWARD UNFINISHED TASKS
+// ============================================
+
+function carryForwardTasks() {
+
+    let tasksUpdated = false;
+
+    tasks.forEach(function(task) {
+
+        if (
+            !task.completed &&
+            !task.paymentInstance &&
+            !task.recurringInstance &&
+            task.date &&
+            task.date < todayString
+        ) {
+
+            task.date = todayString;
+            tasksUpdated = true;
+
+        }
+
+    });
+
+    if (tasksUpdated) {
+        saveTasks();
+    }
+
+}   
+
 
 // ============================================
 // DISPLAY ALL
